@@ -1,0 +1,60 @@
+:root {
+  --bg: #f7f1e7;
+  --card: #fffaf1;
+  --ink: #241c15;
+  --muted: #6d5e50;
+  --line: #d8c7ad;
+  --accent: #7d2f1d;
+  --accent-2: #2f5d50;
+  --warn: #7a4a00;
+  --ok: #1e5d42;
+  --shadow: 0 12px 30px rgba(48, 34, 20, 0.10);
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); color: var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+body { margin: 0; }
+main { max-width: 1220px; margin: 0 auto; padding: 28px 18px 48px; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; align-items: stretch; margin-bottom: 18px; }
+.hero h1 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin: 0 0 12px; letter-spacing: -0.04em; }
+.eyebrow { text-transform: uppercase; letter-spacing: 0.14em; font-weight: 800; color: var(--accent); font-size: 0.75rem; margin: 0 0 10px; }
+.lede { max-width: 760px; color: var(--muted); font-size: 1.05rem; line-height: 1.5; margin: 0; }
+.sourcebox { background: var(--accent-2); color: #fff7e8; border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow); }
+.sourcebox strong { font-size: 1rem; }
+.sourcebox span { opacity: 0.92; font-size: 0.92rem; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 18px; margin: 16px 0; }
+.search label { display: block; font-weight: 800; margin-bottom: 8px; }
+.inputrow { display: flex; gap: 10px; }
+input { flex: 1; border: 2px solid var(--line); border-radius: 12px; padding: 13px 14px; font-size: 1.05rem; background: #fffdf9; color: var(--ink); }
+input:focus { outline: 3px solid rgba(125,47,29,0.18); border-color: var(--accent); }
+button { border: 0; border-radius: 12px; background: var(--accent); color: #fff8ee; padding: 12px 16px; font-weight: 800; cursor: pointer; }
+button:hover { filter: brightness(1.05); }
+.samples { margin-top: 12px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.linklike { background: transparent; color: var(--accent); padding: 2px 4px; border-radius: 6px; text-decoration: underline; }
+.empty { color: var(--muted); padding: 14px 4px; }
+.status { border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; line-height: 1.45; }
+.status.ok { background: rgba(47, 93, 80, .12); color: var(--ok); }
+.status.warn { background: rgba(180, 122, 0, .15); color: var(--warn); }
+.meta-grid { display: grid; grid-template-columns: repeat(5, minmax(160px, 1fr)); gap: 10px; }
+.meta-grid div { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: rgba(255,255,255,.55); }
+.meta-grid span { display: block; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; }
+.meta-grid strong { font-size: 0.95rem; }
+.notes { margin-top: 12px; color: var(--muted); }
+.notes summary { cursor: pointer; font-weight: 800; color: var(--ink); }
+h2 { margin: 0 0 12px; font-size: 1.2rem; }
+.table-wrap { overflow: auto; max-height: 68vh; border: 1px solid var(--line); border-radius: 14px; background: #fffdf8; }
+.table-wrap.small { max-height: 58vh; }
+table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 980px; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); text-align: left; vertical-align: top; font-size: 0.92rem; }
+th { position: sticky; top: 0; background: #f0dfc5; z-index: 1; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .07em; }
+tr:nth-child(even) td { background: rgba(216,199,173,.16); }
+td:first-child, th:first-child { position: sticky; left: 0; background: #fff5e3; z-index: 2; font-weight: 800; min-width: 210px; }
+th:first-child { z-index: 3; background: #ead4b5; }
+td:last-child, th:last-child { border-right: 0; }
+tr:last-child td { border-bottom: 0; }
+footer { color: var(--muted); font-size: 0.9rem; margin-top: 22px; }
+@media (max-width: 840px) {
+  .hero { grid-template-columns: 1fr; }
+  .inputrow { flex-direction: column; }
+  .meta-grid { grid-template-columns: 1fr; }
+  table { min-width: 900px; }
+}

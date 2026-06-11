@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meänkieli Verb Conjugator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Standalone morphology-based web app</p>
+        <h1>Meänkieli Verb Conjugator</h1>
+        <p class="lede">Enter an infinitive. The app checks the included Meänkieli–Swedish dictionary for a definition, then generates conjugations from verb morphology rules.</p>
+      </div>
+      <div class="sourcebox">
+        <strong>Built-in sources</strong>
+        <span>Uploaded Meänkieli grammar PDF</span>
+        <span>Uploaded Meänkieli–Swedish XML dictionary</span>
+        <span>Finnish baseline rules from Uusi kielemme</span>
+      </div>
+    </header>
+
+    <section class="search card">
+      <label for="verbInput">Verb infinitive</label>
+      <div class="inputrow">
+        <input id="verbInput" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="e.g. tapahtua, jua, huomata, tulla">
+        <button id="conjugateBtn">Conjugate</button>
+      </div>
+      <div class="samples">
+        Try:
+        <button class="linklike" data-sample="tapahtua">tapahtua</button>
+        <button class="linklike" data-sample="antaa">antaa</button>
+        <button class="linklike" data-sample="huomata">huomata</button>
+        <button class="linklike" data-sample="jua">jua</button>
+        <button class="linklike" data-sample="syä">syä</button>
+        <button class="linklike" data-sample="tehä">tehä</button>
+      </div>
+    </section>
+
+    <div id="output"></div>
+
+    <footer>
+      <p><strong>Important:</strong> This is a rule-based conjugator, not an authoritative linguistic database. It is designed to keep conjugation dictionary-agnostic, so uncommon dialectal variants may need rule refinement.</p>
+    </footer>
+  </main>
+  <script src="dictionary.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
