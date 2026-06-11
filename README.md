@@ -26,3 +26,7 @@ Standalone static web app. Open `index.html` in a browser or serve the folder wi
 ## Known limitations
 
 This is a rule engine, not a validated grammatical authority. Meänkieli has dialectal variation. Potential mood is marked as rare/low confidence because the uploaded grammar states it is almost unknown in Meänkieli. Some rare consonant gradation and irregular verb cases will need additional explicit morphology rules.
+
+## Update: conservative consonant gradation
+
+Consonant gradation is now applied conservatively. Reverse gradation from weak-looking infinitive roots is only applied for safer KPT pairs. Ambiguous pairs such as `v → p` and `d → t` are not applied automatically; the app leaves the ungraded form in the table and adds a rule note showing the possible alternation and candidate stem. Type 4 past participles now use the weak infinitive root, e.g. `avata → avannu`, rather than the present stem.

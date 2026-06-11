@@ -68,31 +68,81 @@ function lengthenFinalVowel(stem) {
   return v ? stem + v : stem;
 }
 
-function gradeBeforeFinalVowel(stem, patterns) {
-  if (!/[aeiouyäö]$/i.test(stem)) return stem;
+function isVowel(ch) {
+  return /[aeiouyäö]/i.test(ch || "");
+}
+
+function gradeBeforeFinalVowelDetailed(stem, patterns) {
+  if (!/[aeiouyäö]$/i.test(stem)) return { stem, applied: false };
   const last = stem.slice(-1);
   const base = stem.slice(0, -1);
-  for (const [from, to] of patterns) {
-    if (base.endsWith(from)) return base.slice(0, -from.length) + to + last;
+  for (const pattern of patterns) {
+    const [from, to, label, opts = {}] = pattern;
+    if (!base.endsWith(from)) continue;
+    const prefix = base.slice(0, -from.length);
+    if (opts.requirePrevVowel && !isVowel(prefix.slice(-1))) continue;
+    const changed = prefix + to + last;
+    return { stem: changed, applied: true, from, to, label: label || `${from} → ${to}` };
   }
-  return stem;
+  return { stem, applied: false };
+}
+
+function gradeBeforeFinalVowel(stem, patterns) {
+  return gradeBeforeFinalVowelDetailed(stem, patterns).stem;
+}
+
+function strongToWeakDetail(stem) {
+  // Conservative KPT: only the explicit clusters below or single k/p/t between vowels.
+  // This prevents false forms such as rakastaa → *rakasdan and laskea → *lasen.
+  return gradeBeforeFinalVowelDetailed(stem, [
+    ["kk", "k"], ["pp", "p"], ["tt", "t"],
+    ["nk", "ng"], ["mp", "mm"], ["nt", "nn"], ["lt", "ll"], ["rt", "rr"],
+    ["ht", "hd"],
+    ["k", "", "k → ∅", { requirePrevVowel: true }],
+    ["p", "v", "p → v", { requirePrevVowel: true }],
+    ["t", "d", "t → d", { requirePrevVowel: true }]
+  ]);
 }
 
 function strongToWeak(stem) {
-  return gradeBeforeFinalVowel(stem, [
-    ["kk", "k"], ["pp", "p"], ["tt", "t"],
-    ["nk", "ng"], ["mp", "mm"], ["nt", "nn"], ["lt", "ll"], ["rt", "rr"],
-    ["ht", "hd"], ["hk", "h"], ["lk", "lj"], ["rk", "rj"],
-    ["k", ""], ["p", "v"], ["t", "d"]
-  ]);
+  return strongToWeakDetail(stem).stem;
 }
 
-function weakToStrong(stem) {
+function weakToStrongUnsafe(stem) {
   return gradeBeforeFinalVowel(stem, [
     ["ng", "nk"], ["mm", "mp"], ["nn", "nt"], ["ll", "lt"], ["rr", "rt"],
     ["hd", "ht"], ["lj", "lk"], ["rj", "rk"],
-    ["v", "p"], ["d", "t"], ["p", "pp"], ["t", "tt"], ["k", "kk"]
+    ["v", "p", "v → p", { requirePrevVowel: true }],
+    ["d", "t", "d → t", { requirePrevVowel: true }],
+    ["p", "pp", "p → pp", { requirePrevVowel: true }],
+    ["t", "tt", "t → tt", { requirePrevVowel: true }],
+    ["k", "kk", "k → kk", { requirePrevVowel: true }]
   ]);
+}
+
+function weakToStrongSafeDetail(stem) {
+  // Reverse gradation is not always recoverable from the infinitive.
+  // Safe pairs are applied; ambiguous weak consonants such as v/d are reported but not applied.
+  const safe = gradeBeforeFinalVowelDetailed(stem, [
+    ["ng", "nk"], ["mm", "mp"], ["nn", "nt"], ["ll", "lt"], ["rr", "rt"],
+    ["hd", "ht"], ["lj", "lk"], ["rj", "rk"],
+    ["p", "pp", "p → pp", { requirePrevVowel: true }],
+    ["t", "tt", "t → tt", { requirePrevVowel: true }],
+    ["k", "kk", "k → kk", { requirePrevVowel: true }]
+  ]);
+  if (safe.applied) return { ...safe, status: "applied" };
+
+  const ambiguous = gradeBeforeFinalVowelDetailed(stem, [
+    ["v", "p", "v → p", { requirePrevVowel: true }],
+    ["d", "t", "d → t", { requirePrevVowel: true }]
+  ]);
+  if (ambiguous.applied) return { ...ambiguous, status: "possible", candidate: ambiguous.stem };
+
+  return { stem, status: "none", applied: false };
+}
+
+function weakToStrong(stem) {
+  return weakToStrongUnsafe(stem);
 }
 
 function removeEnding(word, ending) {
@@ -237,14 +287,19 @@ function derive(word) {
     }
   } else if (type === 4) {
     const root = removeEnding(w, w.endsWith("tä") ? "tä" : "ta");
-    const strongRoot = weakToStrong(root);
+    const g = weakToStrongSafeDetail(root);
+    const strongRoot = g.status === "applied" ? g.stem : root;
     const a = A(w);
     infStem = root + "t";
     strongStem = strongRoot + a;
     weakStem = presentStem = thirdStem = strongStem;
     consonantStem = infStem;
     imperativeStem = infStem;
-    if (root !== strongRoot) notes.push(`Reverse consonant gradation estimated for type 4: ${root} → ${strongRoot}.`);
+    if (g.status === "applied") {
+      notes.push(`Consonant gradation applied for type 4: ${g.label} (${root} → ${g.stem}).`);
+    } else if (g.status === "possible") {
+      notes.push(`Possible consonant gradation not applied automatically: ${g.label} (${root} → ${g.candidate}; present stem would be ${g.candidate + a}). Infinitive morphology alone cannot distinguish lexical ${g.from} from weak-grade ${g.to}.`);
+    }
   } else if (type === 5) {
     let root;
     if (/tarttea$/.test(w)) root = "tart";
@@ -256,7 +311,14 @@ function derive(word) {
     imperativeStem = infStem;
   } else if (type === 6) {
     let root = removeEnding(w, w.endsWith("tä") ? "tä" : "ta");
-    root = weakToStrong(root);
+    const originalRoot = root;
+    const g = weakToStrongSafeDetail(root);
+    if (g.status === "applied") {
+      root = g.stem;
+      notes.push(`Consonant gradation applied for type 6: ${g.label} (${originalRoot} → ${g.stem}).`);
+    } else if (g.status === "possible") {
+      notes.push(`Possible consonant gradation not applied automatically: ${g.label} (${originalRoot} → ${g.candidate}; stem candidate would be ${g.candidate}ne). Infinitive morphology alone cannot distinguish lexical ${g.from} from weak-grade ${g.to}.`);
+    }
     if (/[aä]e$/.test(root)) root = root.slice(0, -1) + "ke"; // paeta -> pakene
     infStem = removeEnding(w, w.endsWith("tä") ? "ä" : "a");
     presentStem = root + "ne";
@@ -386,8 +448,10 @@ function activePastParticipleSg(d) {
     return root + (u === "y" ? "ny" : "nu");
   }
   if (d.type === 4) {
-    const a = A(d.word);
-    return d.presentStem.replace(new RegExp(a + "$"), "") + (a === "ä" ? "ny" : "nnu");
+    // Type 4 past negative/perfect participle is built from the weak infinitive root,
+    // not from the possibly gradated present stem: avata → avannu, hypätä → hypänny.
+    const root = removeEnding(d.word, d.word.endsWith("tä") ? "tä" : "ta");
+    return root + (frontHarmony(root) ? "nny" : "nnu");
   }
   if (d.type === 5) {
     const base = /tarttea$/.test(d.word) ? "tartte" : removeEnding(d.word, d.word.endsWith("tä") ? "tä" : "ta");
@@ -591,6 +655,7 @@ function confidenceFor(d, dictHit) {
   if (dictHit.found && dictHit.entry.pos?.includes("v")) score += 10;
   if (d.type === "unknown") score -= 30;
   if (d.notes.some(n => /estimated|Potential|Unknown/i.test(n))) score -= 5;
+  if (d.notes.some(n => /Possible consonant gradation not applied/i.test(n))) score -= 10;
   if (["tehä", "nähä", "saa", "jua", "syä", "myyä", "käyä", "voia", "olla", "tulla", "mennä"].includes(d.word)) score += 10;
   return Math.max(25, Math.min(90, score));
 }
