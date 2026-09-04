@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Browser smoke test</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <pre id="smoke">PENDING</pre>
+  <main>
+    <input id="verbInput" value="antaa">
+    <button id="conjugateBtn">Conjugate</button>
+    <label><input type="radio" name="displayMode" value="strict" checked>Strict</label>
+    <label><input type="radio" name="displayMode" value="reference">Reference</label>
+    <button data-sample="jua">jua</button>
+    <div id="output"></div>
+  </main>
+  <script src="../dictionary.js"></script>
+  <script src="../grammar_rules.js"></script>
+  <script src="../validation_metadata.js"></script>
+  <script src="../lexicon.js"></script>
+  <script src="../morphology.js"></script>
+  <script src="../render.js"></script>
+  <script src="../app.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const output = document.getElementById("output");
+      const api = window.__conjugator;
+      const wraps = output.querySelectorAll(".table-wrap");
+      const firstHeader = output.querySelector("th:first-child");
+      const checks = {
+        debug_api: Boolean(api?.generateCell),
+        tables: output.querySelectorAll("table").length === 2,
+        present: output.textContent.includes("annan"),
+        passive: output.textContent.includes("annethaan"),
+        unsupported_visible: output.textContent.includes("Unsupported"),
+        status_visible: output.textContent.includes("Verified"),
+        dictionary: api.lookupDictionary("antaa").found,
+        metadata: ["surfaces", "status", "source", "rule_id", "note"].every(key =>
+          Object.hasOwn(api.generateCell("antaa", "finite|Present tense|mie"), key)
+        ),
+        variants: api.generateCell("antaa", "nonfinite|3rd infinitive illative|active").surfaces.length === 3,
+        gradation: !api.conjugateParadigm("avata").nonfinite.some(row =>
+          [row.active, row.passive].some(cell => cell.surfaces.includes("apannu"))
+        ),
+        jua_juua_distinct:
+          api.generateCell("jua", "finite|Present tense|mie").surfaces[0] !==
+          api.generateCell("juua", "finite|Present tense|mie").surfaces[0],
+        saa_ambiguous: api.resolveInput("saa").kind === "ambiguous_known",
+        potential_unsupported: api.generateCell("antaa", "finite|Potential tense|mie").status === "unsupported",
+        table_scrollable: [...wraps].every(wrap => getComputedStyle(wrap).overflowX === "auto"),
+        sticky_column_opaque:
+          getComputedStyle(firstHeader).position === "sticky" &&
+          getComputedStyle(firstHeader).backgroundColor !== "rgba(0, 0, 0, 0)"
+      };
+      document.querySelector('[data-sample="jua"]').click();
+      checks.sample_button = document.getElementById("verbInput").value === "jua" && output.textContent.includes("juon");
+      document.getElementById("verbInput").value = "tapahtua";
+      document.getElementById("conjugateBtn").click();
+      checks.strict_hides_heuristic_surface = !output.textContent.includes("tapahtun");
+      const reference = document.querySelector('input[value="reference"]');
+      reference.checked = true;
+      reference.dispatchEvent(new Event("change", { bubbles: true }));
+      checks.reference_labels_heuristic_surface = output.textContent.includes("tapahtun") && output.textContent.includes("Heuristic");
+      const passed = Object.values(checks).every(Boolean);
+      document.getElementById("smoke").textContent = JSON.stringify({ passed, checks });
+      document.body.dataset.smoke = passed ? "pass" : "fail";
+    });
+  </script>
+</body>
+</html>
