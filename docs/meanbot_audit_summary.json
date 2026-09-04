@@ -1,0 +1,26 @@
+{
+  "ui_cells": 165,
+  "representative_inputs": 40,
+  "fixture_rows": 6600,
+  "capability_status": {
+    "SUPPORTED_VARIANT": 44,
+    "UNSUPPORTED": 60,
+    "PARTIAL": 60,
+    "AMBIGUOUS": 1
+  },
+  "fixture_status": {
+    "STRICT_VERIFIED": 1513,
+    "SUPPORTED_VARIANT": 264,
+    "UNSUPPORTED": 2793,
+    "PARTIAL": 1897,
+    "AMBIGUOUS": 133
+  },
+  "diff_classification": {
+    "MATCH": 937,
+    "MULTIPLE_VALID_VARIANTS": 273,
+    "MEANBOT_UNSUPPORTED": 720,
+    "CURRENT_APP_HEURISTIC": 2073,
+    "CURRENT_APP_WRONG": 1502,
+    "NEEDS_EVIDENCE": 1095
+  }
+}
