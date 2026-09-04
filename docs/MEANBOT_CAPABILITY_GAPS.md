@@ -5,6 +5,14 @@ Date: 2026-09-04
 This is a report for possible future Meanbot work. No Meanbot or lang-fit file
 was changed by the conjugator task.
 
+## Phase 2 status
+
+The browser refactor discovered no additional Meanbot capability gap. A direct
+strict-oracle check confirmed that `voija` is a productive lemma (`voin`,
+`voisin`, `voinu`, `voitu`), while the existing finding remains unchanged:
+`voia` is not a strict infinitive and must not be silently promoted to
+`voija`.
+
 ## Gaps that block strict UI coverage
 
 - Potential morphology is absent: there is no current `+Pot` path. This blocks

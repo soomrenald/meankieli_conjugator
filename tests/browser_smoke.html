@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Browser smoke test</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <pre id="smoke">PENDING</pre>
+  <main>
+    <input id="verbInput" value="antaa">
+    <button id="conjugateBtn">Conjugate</button>
+    <label><input type="radio" name="displayMode" value="strict" checked>Strict</label>
+    <label><input type="radio" name="displayMode" value="reference">Reference</label>
+    <button data-sample="jua">jua</button>
+    <div id="output"></div>
+  </main>
+  <script src="../dictionary.js"></script>
+  <script src="../grammar_rules.js"></script>
+  <script src="../validation_metadata.js"></script>
+  <script src="../lexicon.js"></script>
+  <script src="../morphology.js"></script>
+  <script src="../render.js"></script>
+  <script src="../app.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const output = document.getElementById("output");
+      const checks = {
+        debug_api: Boolean(window.__conjugator?.generateCell),
+        tables: output.querySelectorAll("table").length === 2,
+        present: output.textContent.includes("annan"),
+        passive: output.textContent.includes("annethaan"),
+        unsupported_visible: output.textContent.includes("Unsupported"),
+        status_visible: output.textContent.includes("Verified")
+      };
+      document.getElementById("verbInput").value = "tapahtua";
+      document.getElementById("conjugateBtn").click();
+      checks.strict_hides_heuristic_surface = !output.textContent.includes("tapahtun");
+      const reference = document.querySelector('input[value="reference"]');
+      reference.checked = true;
+      reference.dispatchEvent(new Event("change", { bubbles: true }));
+      checks.reference_labels_heuristic_surface = output.textContent.includes("tapahtun") && output.textContent.includes("Heuristic");
+      const passed = Object.values(checks).every(Boolean);
+      document.getElementById("smoke").textContent = JSON.stringify({ passed, checks });
+      document.body.dataset.smoke = passed ? "pass" : "fail";
+    });
+  </script>
+</body>
+</html>

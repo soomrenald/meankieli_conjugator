@@ -1,0 +1,35 @@
+{
+  "rows": 6600,
+  "strict_pass": 1777,
+  "strict_fail": 0,
+  "status_pass": 6600,
+  "status_fail": 0,
+  "roundtrip_evidence_rows": 3807,
+  "strict_roundtrip_evidence_fail": 0,
+  "diff_classification": {
+    "MATCH": 1551,
+    "MULTIPLE_VALID_VARIANTS": 359,
+    "CURRENT_APP_WRONG": 0,
+    "CURRENT_APP_HEURISTIC": 0,
+    "MEANBOT_UNSUPPORTED": 2793,
+    "NEEDS_EVIDENCE": 1897
+  },
+  "smoke": {
+    "exact_ui_inventory": true,
+    "phase1_capability_boundary": true,
+    "metadata_on_every_cell": true,
+    "jua_juua_distinct": true,
+    "saa_ambiguous": true,
+    "curly_saaa_known": true,
+    "ascii_saaa_visible_normalization": true,
+    "voia_not_alias": true,
+    "voija_known": true,
+    "voija_strict_samples": true,
+    "unknown_attempt": true,
+    "unknown_heuristic_visible": true,
+    "unknown_class_ambiguity": true,
+    "gradation_regression": true,
+    "h_position_variants": true,
+    "potential_explicitly_unsupported": true
+  }
+}

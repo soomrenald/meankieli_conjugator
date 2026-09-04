@@ -12,13 +12,13 @@
       <div>
         <p class="eyebrow">Standalone morphology-based web app</p>
         <h1>Meänkieli Verb Conjugator</h1>
-        <p class="lede">Enter an infinitive. The app checks the included Meänkieli–Swedish dictionary for a definition, then generates conjugations from verb morphology rules.</p>
+        <p class="lede">Enter an infinitive. The app checks the included Meänkieli–Swedish dictionary, then applies offline morphology rules derived from the Meanbot audit.</p>
       </div>
       <div class="sourcebox">
         <strong>Built-in sources</strong>
-        <span>Uploaded Meänkieli grammar PDF</span>
-        <span>Uploaded Meänkieli–Swedish XML dictionary</span>
-        <span>Finnish baseline rules from Uusi kielemme</span>
+        <span>Meanbot strict morphology fixtures</span>
+        <span>Meänkieli–Swedish offline dictionary</span>
+        <span>Explicit evidence and ambiguity status</span>
       </div>
     </header>
 
@@ -37,15 +37,26 @@
         <button class="linklike" data-sample="syä">syä</button>
         <button class="linklike" data-sample="tehä">tehä</button>
       </div>
+      <fieldset class="display-mode">
+        <legend>Display mode</legend>
+        <label><input type="radio" name="displayMode" value="strict" checked> Strict / verified</label>
+        <label><input type="radio" name="displayMode" value="reference"> Reference candidates</label>
+        <small>Reference mode reveals partial or heuristic candidates, always with a status badge.</small>
+      </fieldset>
     </section>
 
     <div id="output"></div>
 
     <footer>
-      <p><strong>Important:</strong> This is a rule-based conjugator, not an authoritative linguistic database. It is designed to keep conjugation dictionary-agnostic, so uncommon dialectal variants may need rule refinement.</p>
+      <p><strong>Evidence:</strong> Meanbot is the development-time authority. The browser runs offline from audited class/stem rules; unsupported and ambiguous cells are never silently promoted to verified forms.</p>
     </footer>
   </main>
   <script src="dictionary.js"></script>
+  <script src="grammar_rules.js"></script>
+  <script src="validation_metadata.js"></script>
+  <script src="lexicon.js"></script>
+  <script src="morphology.js"></script>
+  <script src="render.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
