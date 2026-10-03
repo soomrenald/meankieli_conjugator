@@ -62,11 +62,10 @@
   });
 
   function renderCell(result, mode) {
-    const showCandidates = mode === "reference" || !["partial", "heuristic"].includes(result.status);
-    const surfaces = showCandidates ? result.surfaces.join(" / ") : "";
-    const value = surfaces || statusLabels[result.status] || result.status;
+    const value = result.surfaces.join(" / ") || "Unavailable";
     const title = [result.note, `Rule: ${result.rule_id}`, `Source: ${result.source}`].filter(Boolean).join(" — ");
-    return `<span class="cell-result" tabindex="0" title="${escapeHtml(title)}"><span class="cell-forms">${escapeHtml(value)}</span><span class="cell-badge badge-${escapeHtml(result.status)}">${escapeHtml(statusLabels[result.status] || result.status)}</span></span>`;
+    const evidence = mode === "reference" ? `<span class="cell-evidence">${escapeHtml(title)}</span>` : "";
+    return `<span class="cell-result" tabindex="0" title="${escapeHtml(title)}"><span class="cell-forms">${escapeHtml(value)}</span><span class="cell-badge badge-${escapeHtml(result.status)}">${escapeHtml(statusLabels[result.status] || result.status)}</span>${evidence}</span>`;
   }
 
   function renderResolution(resolution) {
