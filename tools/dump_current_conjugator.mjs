@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 globalThis.window = globalThis;
-for (const file of ["grammar_rules.js", "validation_metadata.js", "lexicon.js", "morphology.js"]) {
+for (const file of ["grammar_rules.js", "validation_metadata.js", "lexicon.js", "meanbot_update_data.js", "meanbot_updates.js", "past_example_data.js", "past_examples.js", "morphology.js"]) {
   vm.runInThisContext(fs.readFileSync(path.join(root, file), "utf8"), { filename: file });
 }
 

@@ -5,6 +5,7 @@
     VERIFIED: "verified",
     SUPPORTED_VARIANT: "supported_variant",
     DERIVED: "derived",
+    DOCUMENTED: "documented",
     PARTIAL: "partial",
     AMBIGUOUS: "ambiguous",
     HEURISTIC: "heuristic",
@@ -67,14 +68,15 @@
     return [...new Set((values || []).filter(Boolean))];
   }
 
-  function result(surfaces, status, ruleId, source, note = "") {
+  function result(surfaces, status, ruleId, source, note = "", surfaceEvidence = []) {
     const clean = unique(Array.isArray(surfaces) ? surfaces : [surfaces]);
     return Object.freeze({
       surfaces: Object.freeze(clean),
       status,
       rule_id: ruleId,
       source,
-      note
+      note,
+      surface_evidence: Object.freeze(surfaceEvidence.map(item => Object.freeze({ ...item })))
     });
   }
 

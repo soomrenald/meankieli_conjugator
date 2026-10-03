@@ -1,0 +1,128 @@
+{
+  "passed": true,
+  "classified_source_rows": 128,
+  "distinct_new_document_cells": 48,
+  "counts": {
+    "existing-agreement": 52,
+    "audited-conflict": 14,
+    "new-document-cell": 50,
+    "lexical-substitution": 6,
+    "ambiguous-lemma": 3,
+    "unresolved-stem": 3
+  },
+  "conflicts": [
+    {
+      "id": "T2.R3",
+      "lemma": "käsittää",
+      "document": "käsittäny",
+      "retained": [
+        "käsittänny"
+      ]
+    },
+    {
+      "id": "T2.R4",
+      "lemma": "ymmärtää",
+      "document": "ymmärtäny",
+      "retained": [
+        "ymmärtänny"
+      ]
+    },
+    {
+      "id": "T2.R8",
+      "lemma": "kirjottaa",
+      "document": "kirjottanu",
+      "retained": [
+        "kirjottannu"
+      ]
+    },
+    {
+      "id": "T9.R2",
+      "lemma": "hypätä",
+      "document": "hypänny",
+      "retained": [
+        "hypäny"
+      ]
+    },
+    {
+      "id": "T9.R3",
+      "lemma": "tarjota",
+      "document": "tarjonnu",
+      "retained": [
+        "tarjonu"
+      ]
+    },
+    {
+      "id": "T9.R4",
+      "lemma": "haluta",
+      "document": "halunnu",
+      "retained": [
+        "halunu"
+      ]
+    },
+    {
+      "id": "T9.R6",
+      "lemma": "hakata",
+      "document": "hakannu",
+      "retained": [
+        "hakanu"
+      ]
+    },
+    {
+      "id": "T23.R4",
+      "lemma": "päästä",
+      "document": "päässeet",
+      "retained": [
+        "olema pääsheet"
+      ]
+    },
+    {
+      "id": "T44.R1",
+      "lemma": "vanheta",
+      "document": "vanhaintunu",
+      "retained": [
+        "vanhenu"
+      ]
+    },
+    {
+      "id": "T47.R1",
+      "lemma": "vanheta",
+      "document": "vanhentu",
+      "retained": [
+        "vanheni"
+      ]
+    },
+    {
+      "id": "T47.R3",
+      "lemma": "kylmetä",
+      "document": "kylmisty",
+      "retained": [
+        "kylmeni"
+      ]
+    },
+    {
+      "id": "T47.R5",
+      "lemma": "lyhetä",
+      "document": "lyhenty",
+      "retained": [
+        "lyheni"
+      ]
+    },
+    {
+      "id": "T47.R6",
+      "lemma": "vaaleta",
+      "document": "vaalentu",
+      "retained": [
+        "vaaleni"
+      ]
+    },
+    {
+      "id": "P33",
+      "lemma": "aatela",
+      "document": "aatelin",
+      "retained": [
+        "aattelin"
+      ]
+    }
+  ],
+  "source_docx_crosscheck": true
+}

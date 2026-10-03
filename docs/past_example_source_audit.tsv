@@ -1,0 +1,129 @@
+id	lemma	kind	slot	document	classification	result	status
+T2.R1	antaa	participle	sg	antanu	existing-agreement	antanu	verified
+T2.R2	alkaa	participle	sg	alkanu	existing-agreement	alkanu	verified
+T2.R3	käsittää	participle	sg	käsittäny	audited-conflict	käsittänny	verified
+T2.R4	ymmärtää	participle	sg	ymmärtäny	audited-conflict	ymmärtänny	verified
+T2.R5	unheuttaa	participle	sg	unhouttanu	new-document-cell	unhouttanu	documented
+T2.R6	herättää	participle	sg	herättäny	new-document-cell	herättäny	documented
+T2.R7	ostaa	participle	pl	ostanheet	existing-agreement	olema ostahneet / olema ostanheet	partial
+T2.R8	kirjottaa	participle	sg	kirjottanu	audited-conflict	kirjottannu	verified
+T2.R9	rakastaa	participle	sg	rakastanu	new-document-cell	rakastanu	documented
+T2.R10	auttaa	participle	sg	auttanu	new-document-cell	auttanu	documented
+T5.R1	antaa	past	se/hään	anto	existing-agreement	anto / antoi	supported_variant
+T5.R2	alkaa	past	se/hään	alko	existing-agreement	alko / alkoi	supported_variant
+T5.R3	käsittää	past	mie	käsitin	existing-agreement	käsitin	verified
+T5.R4	ymmärtää	past	se/hään	ymmärsi	existing-agreement	ymmärsi	verified
+T5.R5	unheuttaa	past	se/hään	unhoutti	new-document-cell	unhoutti	documented
+T5.R6	herättää	past	se/hään	herätti	new-document-cell	herätti	documented
+T5.R7	ostaa	past	se/hään	osti	existing-agreement	osti	verified
+T5.R8	kirjottaa	past	se/hään	kirjotti	existing-agreement	kirjotti	verified
+T5.R9	rakastaa	past	se/hään	rakasti	new-document-cell	rakasti	documented
+T5.R10	auttaa	past	met	autoima	new-document-cell	autoima	documented
+T9.R1	huomata	participle	sg	huomanu	existing-agreement	huomanu	verified
+T9.R2	hypätä	participle	sg	hypänny	audited-conflict	hypäny	verified
+T9.R3	tarjota	participle	sg	tarjonnu	audited-conflict	tarjonu	verified
+T9.R4	haluta	participle	sg	halunnu	audited-conflict	halunu	verified
+T9.R5	pölätä	participle	sg	pölänny	new-document-cell	pölänny	documented
+T9.R6	hakata	participle	sg	hakannu	audited-conflict	hakanu	verified
+T9.R7	maata	participle	sg	maanu	existing-agreement	maanu	verified
+T9.R8	kaota	participle	sg	kaonu	new-document-cell	kaonu	documented
+T12.R1	havata	past	se/hään	havati	new-document-cell	havati	documented
+T12.R2	hypätä	past	se/hään	hyppäsi	existing-agreement	hyppäs / hyppäsi	supported_variant
+T12.R3	tarjota	past	se/hään	tarjosi	existing-agreement	tarjos / tarjosi	supported_variant
+T12.R4	haluta	past	se/hään	halusi	existing-agreement	halus / halusi	supported_variant
+T12.R5	pölätä	past	se/hään	pölkäsi	new-document-cell	pölkäsi	documented
+T12.R6	määrätä	past	se/hään	määräsi	new-document-cell	määräsi	documented
+T12.R7	arvata	past	mie	arvasin	new-document-cell	arvasin	documented
+T12.R8	hakata	past	se/hään	hakkasi	existing-agreement	hakkas / hakkasi	supported_variant
+T12.R9	maata	past	se/hään	makasi	existing-agreement	makas / makasi	supported_variant
+T12.R10	kaota	past	se/hään	katosi	new-document-cell	katosi	documented
+T16.R1	saa’a	participle	sg	saanu	existing-agreement	saanu	verified
+T16.R2	myyä	participle	sg	myyny	existing-agreement	myyny	verified
+T16.R3	jua	participle	sg	juonu	existing-agreement	juonu	verified
+T16.R4	tehä	participle	sg	tehny	existing-agreement	tehny	verified
+T16.R5	nähä	participle	sg	nähny	existing-agreement	nähny	verified
+T16.R6	syä	participle	sg	syöny	existing-agreement	syöny	verified
+T16.R7	lyä	participle	sg	lyöny	new-document-cell	lyöny	documented
+T16.R8	käyä	participle	sg	käyny	existing-agreement	käyny	verified
+T16.R9	jää’ä	participle	sg	jääny	new-document-cell	jääny	documented
+T19.R1	saa’a	past	se/hään	sai	existing-agreement	sai	verified
+T19.R2	myyä	past	net/het	myit	existing-agreement	myit / myythiin	supported_variant
+T19.R3	jua	past	se/hään	joi	existing-agreement	joi	verified
+T19.R4	voia	past	se/hään	saatto	lexical-substitution		unsupported
+T19.R5	tehä	past	mie	tehin	existing-agreement	tehin	verified
+T19.R6	nähä	past	met	näimä	existing-agreement	näimä	verified
+T19.R7	syä	past	net/het	söit	existing-agreement	söit / syöthiin	supported_variant
+T19.R8	lyä	past	se/hään	löi	new-document-cell	löi	documented
+T19.R9	käyä	past	mie	kävin	existing-agreement	kävin	verified
+T19.R10	jää’ä	past	met	jäimä	new-document-cell	jäimä	documented
+T23.R1	nousta	participle	sg	noussu	existing-agreement	noussu	verified
+T23.R2	pestä	participle	sg	pessy	existing-agreement	pessy	verified
+T23.R3	laukkoa	participle	sg	laukkonu	new-document-cell	laukkonu	documented
+T23.R4	päästä	participle	pl	päässeet	audited-conflict	olema pääsheet	partial
+T23.R5	purra	participle	sg	purru	new-document-cell	purru	documented
+T23.R6	murehtia	participle	sg	murehtinu	new-document-cell	murehtinu	documented
+T23.R7	kusta	participle	sg	kussu	new-document-cell	kussu	documented
+T23.R8	nousta	participle	sg	noussu	existing-agreement	noussu	verified
+T23.R9	päästä	participle	sg	päässy	existing-agreement	päässy	verified
+T23.R10	laukoa	participle	sg	laukonu	new-document-cell	laukonu	documented
+T25.R1	nousta	past	se/hään	nousi	existing-agreement	nousi	verified
+T25.R2	pestä	past	se/hään	pesi	existing-agreement	pesi	verified
+T25.R3	juoksea	past	se/hään	juoksi/laukko	ambiguous-lemma		heuristic
+T25.R4	päästä	past	se/hään	pääsi	existing-agreement	pääsi	verified
+T25.R5	purra	past	se/hään	puri	new-document-cell	puri	documented
+T25.R6	surra	past	se/hään	murehti	lexical-substitution		ambiguous
+T25.R7	kusta	past	se/hään	kusi	new-document-cell	kusi	documented
+T25.R8	nousta	past	se/hään	nousi	existing-agreement	nousi	verified
+T25.R9	päästä	past	se/hään	pääsi	existing-agreement	pääsi	verified
+T25.R10	juoksea	past	se/hään	juoksi/laukko	ambiguous-lemma		heuristic
+T28.R1	tulla	participle	sg	tullu	existing-agreement	tullu	verified
+T28.R2	mennä	participle	sg	menny	existing-agreement	menny	verified
+T28.R3	aatela	participle	sg	hunderanu	lexical-substitution	aattelu	verified
+T28.R4	olla	participle	sg	ollu	existing-agreement	ollu	verified
+T28.R5	kuolla	participle	sg	kuollu	new-document-cell	kuollu	documented
+T28.R6	panna	participle	sg	pannu	new-document-cell	pannu	documented
+T28.R7	purra	participle	sg	purru	new-document-cell	purru	documented
+T28.R8	surra	participle	sg	murehtinu	lexical-substitution		ambiguous
+T28.R9	ajatella	participle	sg	ajatellu	new-document-cell	ajatellu	documented
+T28.R10	kuunnella	participle	sg	kuunnellu	new-document-cell	kuunnellu	documented
+T31.R1	tulla	past	se/hään	tuli	existing-agreement	tuli	verified
+T31.R2	mennä	past	mie	menin	existing-agreement	menin	verified
+T31.R3	aatela	past	se/hään	aatteli	existing-agreement	aatteli	verified
+T31.R4	olla	past	se/hään	oli	existing-agreement	oli	verified
+T31.R5	kuolla	past	se/hään	kuoli	new-document-cell	kuoli	documented
+T31.R6	panna	past	mie	panin	new-document-cell	panin	documented
+T31.R7	purra	past	se/hään	puri	new-document-cell	puri	documented
+T31.R8	surra	past	se/hään	murehti	lexical-substitution		ambiguous
+T31.R9	muistaa	past	mie	muistin	new-document-cell	muistin	documented
+T31.R10	kuunnella	past	met	kuntelima	new-document-cell	kuntelima	documented
+T36.R1	tarttea	participle	sg	tarttenu	existing-agreement	tarttenu	verified
+T36.R2	häiritä	participle	sg	häirinny	new-document-cell	häirinny	documented
+T36.R3	valita	participle	sg	valinnu	new-document-cell	valinnu	documented
+T36.R4	selitää	participle	sg	selitäny	new-document-cell	selitäny	documented
+T36.R5	tulkita	participle	sg	tulkinnu	new-document-cell	tulkinnu	documented
+T36.R6	tuomita	participle	passive	tuomittu	new-document-cell	tuomittu	documented
+T36.R7	hoitaa	participle	sg	hoitanu	new-document-cell	hoitanu	documented
+T39.R1	tarttea	past	mie	tarttin	existing-agreement	tarttin	verified
+T39.R2	häiritä	past	se/hään	häiritti	new-document-cell	häiritti	documented
+T39.R3	valita	past	se/hään	valiti	new-document-cell	valiti	documented
+T39.R4	tulkita	past	mie	tulkittin	new-document-cell	tulkittin	documented
+T39.R5	tuomita	past	net/het	tuomit	new-document-cell	tuomit	documented
+T39.R6	hoitaa	past	se/hään	hoiti	new-document-cell	hoiti	documented
+T44.R1	vanheta	participle	sg	vanhaintunu	audited-conflict	vanhenu	verified
+T44.R2	lämmittä	participle	sg	lämpiny	ambiguous-lemma		heuristic
+T44.R3	kylmetä	participle	sg	kylmeny	existing-agreement	kylmeny	verified
+T44.R4	nuoreta	participle	sg	nuorentunu	unresolved-stem		ambiguous
+T44.R5	lyhetä	participle	pl	lyhehneet	existing-agreement	olema lyhehneet / olema lyhenheet	partial
+T44.R6	vaaleta	participle	sg	vaalenu	existing-agreement	vaalenu	verified
+T44.R7	tummeta	participle	sg	tummistunu	unresolved-stem		ambiguous
+T44.R8	heiketä	participle	sg	heikonu	new-document-cell	heikonu	documented
+T44.R9	laiheta	participle	sg	laihtunu	unresolved-stem		ambiguous
+T47.R1	vanheta	past	se/hään	vanhentu	audited-conflict	vanheni	verified
+T47.R2	lämmetä	past	se/hään	lämpeni	existing-agreement	lämpeni	verified
+T47.R3	kylmetä	past	se/hään	kylmisty	audited-conflict	kylmeni	verified
+T47.R4	nuoreta	past	se/hään	näytti	lexical-substitution		ambiguous
+T47.R5	lyhetä	past	se/hään	lyhenty	audited-conflict	lyheni	verified
+T47.R6	vaaleta	past	se/hään	vaalentu	audited-conflict	vaaleni	verified
+T47.R7	heiketä	past	se/hään	heikosi	new-document-cell	heikosi	documented
+T47.R8	laihtua	past	se/hään	laihtu	new-document-cell	laihtu	documented
+P33	aatela	past	mie	aatelin	audited-conflict	aattelin	verified

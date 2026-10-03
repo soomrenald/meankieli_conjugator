@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 globalThis.window = globalThis;
-for (const file of ["grammar_rules.js", "validation_metadata.js", "lexicon.js", "morphology.js"]) {
+for (const file of ["grammar_rules.js", "validation_metadata.js", "lexicon.js", "meanbot_update_data.js", "meanbot_updates.js", "past_example_data.js", "past_examples.js", "morphology.js"]) {
   vm.runInThisContext(fs.readFileSync(path.join(root, file), "utf8"), { filename: file });
 }
 
@@ -30,10 +30,10 @@ function sameSet(left, right) {
 const rows = parseTsv(path.join(root, "tests/meanbot_expected_verbs.tsv"));
 const resolutions = new Map();
 const output = [];
-const totals = { rows: rows.length, strict_pass: 0, strict_fail: 0, status_pass: 0, status_fail: 0, roundtrip_evidence_rows: 0, strict_roundtrip_evidence_fail: 0 };
+const totals = { rows: rows.length, strict_pass: 0, strict_fail: 0, status_pass: 0, status_fail: 0, roundtrip_evidence_rows: 0, strict_roundtrip_evidence_fail: 0, source_updated_rows: 0 };
 const diff = Object.fromEntries([
   "MATCH", "MULTIPLE_VALID_VARIANTS", "CURRENT_APP_WRONG",
-  "CURRENT_APP_HEURISTIC", "MEANBOT_UNSUPPORTED", "NEEDS_EVIDENCE"
+  "CURRENT_APP_HEURISTIC", "MEANBOT_UNSUPPORTED", "NEEDS_EVIDENCE", "SOURCE_UPDATED"
 ].map(value => [value, 0]));
 
 for (const row of rows) {
@@ -43,7 +43,11 @@ for (const row of rows) {
   const expected = oracleSurfaces(row);
   const overlap = actual.surfaces.filter(surface => expected.includes(surface));
   const strictOracle = row.status === "STRICT_VERIFIED" || row.status === "SUPPORTED_VARIANT";
-  const statusOkay =
+  // The frozen Phase 1 oracle remains authoritative for its strict cells.
+  // Only the separately tested Phase 21 overlay supersedes historical gaps.
+  const sourceUpdated = !strictOracle && /^P21[CD]\./.test(actual.rule_id);
+  if (sourceUpdated) totals.source_updated_rows += 1;
+  const statusOkay = sourceUpdated ||
     (row.status === "UNSUPPORTED" && actual.status === "unsupported") ||
     (row.status === "AMBIGUOUS" && actual.status === "ambiguous") ||
     (row.status === "PARTIAL" && ["partial", "unsupported"].includes(actual.status)) ||
@@ -59,7 +63,8 @@ for (const row of rows) {
   if (strictOracle && row.analyzer_roundtrip !== "PASS") totals.strict_roundtrip_evidence_fail += 1;
 
   let classification;
-  if (actual.status === "heuristic") classification = "CURRENT_APP_HEURISTIC";
+  if (sourceUpdated) classification = "SOURCE_UPDATED";
+  else if (actual.status === "heuristic") classification = "CURRENT_APP_HEURISTIC";
   else if (row.status === "UNSUPPORTED" && actual.status === "unsupported") classification = "MEANBOT_UNSUPPORTED";
   else if (row.status === "AMBIGUOUS" && actual.status === "ambiguous") classification = "MULTIPLE_VALID_VARIANTS";
   else if (row.status === "PARTIAL") classification = overlap.length || !expected.length ? "NEEDS_EVIDENCE" : "CURRENT_APP_WRONG";
@@ -142,4 +147,4 @@ if (process.argv.includes("--write")) {
   fs.writeFileSync(path.join(root, "docs/phase2_regression_summary.json"), JSON.stringify(summary, null, 2) + "\n");
 }
 console.log(JSON.stringify(summary, null, 2));
-if (totals.strict_fail || totals.strict_roundtrip_evidence_fail || Object.values(smoke).includes(false)) process.exitCode = 1;
+if (totals.strict_fail || totals.status_fail || totals.strict_roundtrip_evidence_fail || Object.values(smoke).includes(false)) process.exitCode = 1;

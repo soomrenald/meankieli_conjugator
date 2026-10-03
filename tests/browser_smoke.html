@@ -20,6 +20,10 @@
   <script src="../grammar_rules.js"></script>
   <script src="../validation_metadata.js"></script>
   <script src="../lexicon.js"></script>
+  <script src="../meanbot_update_data.js"></script>
+  <script src="../meanbot_updates.js"></script>
+  <script src="../past_example_data.js"></script>
+  <script src="../past_examples.js"></script>
   <script src="../morphology.js"></script>
   <script src="../render.js"></script>
   <script src="../app.js"></script>
@@ -70,11 +74,37 @@
       checks.reference_evidence_visible = output.querySelector(".cell-evidence").textContent.includes("Source:");
       document.getElementById("verbInput").value = "antaa";
       document.getElementById("conjugateBtn").click();
-      checks.partial_surface_visible = [...output.querySelectorAll(".cell-status-partial .cell-forms")].some(cell => cell.textContent === api.generateCell("antaa", "finite|Present negative tense|passive").surfaces.join(" / "));
+      checks.partial_surface_visible = [...output.querySelectorAll(".cell-status-partial .cell-forms")].some(cell => cell.textContent === api.generateCell("antaa", "finite|Present perfect tense|mie").surfaces.join(" / "));
       document.querySelector('input[value="strict"]').checked = true;
       document.querySelector('input[value="strict"]').dispatchEvent(new Event("change", { bubbles: true }));
-      checks.default_partial_surface_visible = [...output.querySelectorAll(".cell-status-partial .cell-forms")].some(cell => cell.textContent === api.generateCell("antaa", "finite|Present negative tense|passive").surfaces.join(" / "));
+      checks.default_partial_surface_visible = [...output.querySelectorAll(".cell-status-partial .cell-forms")].some(cell => cell.textContent === api.generateCell("antaa", "finite|Present perfect tense|mie").surfaces.join(" / "));
       checks.unsupported_is_unavailable = output.querySelector(".cell-status-unsupported .cell-forms").textContent === "Unavailable";
+      checks.updated_conditional_visible = [...output.querySelectorAll(".cell-status-derived .cell-forms")].some(cell => cell.textContent === "en antais");
+      checks.updated_passive_visible = [...output.querySelectorAll(".cell-status-derived .cell-forms")].some(cell => cell.textContent === "ei antaa");
+      checks.per_surface_source_visible = [...output.querySelectorAll(".cell-status-derived .cell-result")].some(cell => cell.title.includes("main-component-roundtrip") && cell.title.includes("VERB_RUNTIME_RESULTS.tsv:"));
+      document.getElementById("verbInput").value = "olla";
+      document.getElementById("conjugateBtn").click();
+      const potential = [...output.querySelectorAll("tbody tr")].find(row => row.querySelector("td").textContent === "Potential tense");
+      checks.exact_lienee_visible = potential.querySelectorAll("td")[3].querySelector(".cell-forms").textContent === "lienee";
+      checks.neighboring_potential_unavailable = potential.querySelectorAll("td")[1].querySelector(".cell-forms").textContent === "Unavailable";
+      document.getElementById("verbInput").value = "rakastaa";
+      document.getElementById("conjugateBtn").click();
+      const past = [...output.querySelectorAll("tbody tr")].find(row => row.querySelector("td").textContent === "Past tense");
+      checks.document_example_visible = past.querySelectorAll("td")[3].querySelector(".cell-forms").textContent === "rakasti";
+      checks.document_badge_distinct = past.querySelectorAll("td")[3].querySelector(".cell-badge").textContent === "Document example";
+      checks.extrapolated_past_visible = past.querySelectorAll("td")[1].querySelector(".cell-forms").textContent === "rakastin";
+      checks.extrapolated_badge_distinct = past.querySelectorAll("td")[1].querySelector(".cell-badge").textContent === "Heuristic";
+      checks.document_source_locator = past.querySelectorAll("td")[3].querySelector(".cell-result").title.includes("#T5.R9");
+      checks.document_composed_example_limit = past.querySelectorAll("td")[3].querySelector(".cell-result").title.includes("not an independent corpus attestation");
+      checks.heldout_rule_candidate = api.generateCell("haista", "finite|Past tense|mie").surfaces[0] === "haisin" && api.generateCell("haista", "finite|Past tense|mie").status === "heuristic";
+      checks.document_strong_stem_gap = api.generateCell("auttaa", "finite|Past tense|se/hään").surfaces.length === 0 && api.generateCell("auttaa", "finite|Past tense|se/hään").status === "ambiguous";
+      document.getElementById("verbInput").value = "vanheta";
+      document.getElementById("conjugateBtn").click();
+      const auditedPast = [...output.querySelectorAll("tbody tr")].find(row => row.querySelector("td").textContent === "Past tense");
+      checks.audited_past_retained = auditedPast.querySelectorAll("td")[3].querySelector(".cell-forms").textContent === "vanheni";
+      checks.source_conflict_explained = auditedPast.querySelectorAll("td")[3].querySelector(".cell-result").title.includes("vanhentu");
+      checks.source_conflict_not_variant = !auditedPast.querySelectorAll("td")[3].querySelector(".cell-forms").textContent.includes("vanhentu");
+      checks.visible_variant_normalization = api.resolveInput("tehjä").lemma === "tehä" && api.resolveInput("tehjä").normalized_from === "tehjä";
       const passed = Object.values(checks).every(Boolean);
       document.getElementById("smoke").textContent = JSON.stringify({ passed, checks });
       document.body.dataset.smoke = passed ? "pass" : "fail";

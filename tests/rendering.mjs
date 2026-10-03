@@ -8,7 +8,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 globalThis.window = globalThis;
-for (const file of ["grammar_rules.js", "validation_metadata.js", "lexicon.js", "morphology.js", "render.js"]) {
+for (const file of ["grammar_rules.js", "validation_metadata.js", "lexicon.js", "meanbot_update_data.js", "meanbot_updates.js", "past_example_data.js", "past_examples.js", "morphology.js", "render.js"]) {
   vm.runInThisContext(fs.readFileSync(path.join(root, file), "utf8"), { filename: file });
 }
 
@@ -17,7 +17,7 @@ const M = window.MeanKieliMorphology;
 const R = window.MeanKieliRender;
 const heuristic = M.generateCell("tapahtua", "finite|Present tense|mie");
 const emptyHeuristic = M.generateCell("tapahtua", "finite|Past tense|mie");
-const partial = M.generateCell("antaa", "finite|Present negative tense|passive");
+const partial = M.generateCell("antaa", "finite|Present perfect tense|mie");
 const unsupported = M.generateCell("antaa", "finite|Potential tense|mie");
 const ambiguous = M.generateCell("testata", "finite|Present tense|mie");
 const snapshots = JSON.stringify([heuristic, emptyHeuristic, partial, unsupported, ambiguous]);
