@@ -55,6 +55,7 @@
     verified: "Verified",
     supported_variant: "Verified variants",
     derived: "Derived",
+    documented: "Document example",
     partial: "Partial",
     ambiguous: "Ambiguous",
     heuristic: "Heuristic",
@@ -63,7 +64,10 @@
 
   function renderCell(result, mode) {
     const value = result.surfaces.join(" / ") || "Unavailable";
-    const title = [result.note, `Rule: ${result.rule_id}`, `Source: ${result.source}`].filter(Boolean).join(" — ");
+    const surfaceEvidence = (result.surface_evidence || []).map(item =>
+      `${item.surface}: ${item.evidence_level}; ${item.source_locator}; ${item.grammatical_source}`
+    ).join(" / ");
+    const title = [result.note, `Rule: ${result.rule_id}`, `Source: ${result.source}`, surfaceEvidence].filter(Boolean).join(" — ");
     const evidence = mode === "reference" ? `<span class="cell-evidence">${escapeHtml(title)}</span>` : "";
     return `<span class="cell-result" tabindex="0" title="${escapeHtml(title)}"><span class="cell-forms">${escapeHtml(value)}</span><span class="cell-badge badge-${escapeHtml(result.status)}">${escapeHtml(statusLabels[result.status] || result.status)}</span>${evidence}</span>`;
   }
@@ -74,6 +78,9 @@
     if (resolution.entry) {
       classLabel = L.labels[resolution.entry.class_id] || resolution.entry.class_id;
       confidence = resolution.kind === "ambiguous_known" ? "lexically ambiguous" : "known Meanbot class";
+    } else if (resolution.documented_past) {
+      classLabel = "Documented examples / bounded past rules";
+      confidence = "document examples; extrapolation unverified";
     } else if (resolution.candidates?.length) {
       classLabel = resolution.candidates.map(candidate => candidate.class_id).join(" / ");
       confidence = resolution.candidates.length > 1 ? "ambiguous surface classes" : "unverified surface class";

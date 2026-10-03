@@ -60,6 +60,7 @@ tr:last-child td { border-bottom: 0; }
 .cell-evidence { color: var(--muted); font-size: .75rem; overflow-wrap: anywhere; }
 .cell-badge { align-self: flex-start; border-radius: 999px; padding: 2px 7px; font-size: 0.66rem; font-weight: 850; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
 .badge-verified, .badge-supported_variant { color: #14533a; background: #d8eee4; }
+.badge-documented { color: #24496d; background: #deebfa; }
 .badge-derived { color: #23526a; background: #dcebf2; }
 .badge-partial { color: #745000; background: #f4e5b9; }
 .badge-ambiguous { color: #673a78; background: #eadcf0; }

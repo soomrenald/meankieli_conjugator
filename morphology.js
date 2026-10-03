@@ -73,6 +73,11 @@
         note: "voia is not a strict infinitive lemma; it is not silently normalized to voija."
       };
     }
+    const sourceAlias = global.MeanKieliPastExamples?.resolveAlias(input.normalized);
+    if (sourceAlias) {
+      return { ...input, kind: "known", lemma: sourceAlias, entry: L.entries[sourceAlias], candidates: [sourceAlias], normalized_from: input.raw,
+        note: `Document infinitive variant ${input.normalized} is shown under audited lemma ${sourceAlias}. This normalization is explicit; spelling and lemma distinctions remain in the evidence.` };
+    }
     const entry = L.entries[input.normalized];
     if (entry) {
       const visiblyNormalized = input.raw.toLowerCase() !== input.normalized;
@@ -83,18 +88,19 @@
         entry,
         candidates: [input.normalized],
         normalized_from: visiblyNormalized ? input.raw : "",
-        note: visiblyNormalized ? `Input punctuation normalized visibly to ${input.normalized}.` : ""
+        note: [visiblyNormalized ? `Input punctuation normalized visibly to ${input.normalized}.` : "", global.MeanKieliPastExamples?.resolutionNote(input.normalized)].filter(Boolean).join(" ")
       };
     }
     const candidates = inferUnknownCandidates(input.normalized);
     return {
       ...input,
       kind: candidates.length > 1 ? "unknown_ambiguous" : "unknown",
+      documented_past: global.MeanKieliPastExamples?.hasExamples(input.normalized) || false,
       lemma: input.normalized,
       candidates,
-      note: candidates.length
+      note: [candidates.length
         ? "Unknown lemma: only surface-safe class hypotheses are available."
-        : "No safe Meanbot-derived infinitive class matches this input."
+        : "No safe Meanbot-derived infinitive class matches this input.", global.MeanKieliPastExamples?.resolutionNote(input.normalized)].filter(Boolean).join(" ")
     };
   }
 
@@ -718,10 +724,15 @@
     const resolution = typeof resolutionOrInput === "string" ? resolveInput(resolutionOrInput) : resolutionOrInput;
     if (!resolution || resolution.kind === "empty") return G.unsupported("input.empty", "Enter an infinitive.");
     if (resolution.kind === "rejected_alias") return G.unsupported("input.voia-not-infinitive", resolution.note);
-    if (!resolution.entry) return unknownCell(resolution, key);
+    if (!resolution.entry) {
+      return global.MeanKieliPastExamples?.generateCell(resolution, key, generateCell) || unknownCell(resolution, key);
+    }
+    const updated = global.MeanKieliUpdates?.generateCell(resolution, key);
+    if (updated) return updated;
     if (key.startsWith("finite|")) {
       const [, section, slot] = key.split("|");
-      return knownFinite(resolution, section, slot);
+      const result = knownFinite(resolution, section, slot);
+      return global.MeanKieliPastExamples?.annotateKnown(resolution, key, result) || result;
     }
     const [, form, voice] = key.split("|");
     if (form === "1st long infinitive" && voice === "active") {
@@ -733,7 +744,8 @@
     const capability = V.capabilityStatus(key);
     if (capability === "UNSUPPORTED") return G.unsupported("gap.nonfinite", "No current strict Meanbot path for this nonfinite cell.");
     const surfaces = nonfiniteSurfaces(resolution.entry, resolution.lemma, form, voice);
-    return baseResult(resolution, surfaces, `nonfinite.${form.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.${voice}`);
+    const result = baseResult(resolution, surfaces, `nonfinite.${form.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.${voice}`);
+    return global.MeanKieliPastExamples?.annotateKnown(resolution, key, result) || result;
   }
 
   function buildFiniteRows(resolutionOrInput) {
