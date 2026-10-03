@@ -20,10 +20,13 @@ Every table cell is a structured result:
 }
 ```
 
-Strict mode shows verified/derived results and makes gaps explicit. Reference
-mode may reveal component-derived or heuristic candidates, but retains their
-status badge. Multiple Meanbot surfaces are rendered with ` / ` and remain an
-array in the debug API.
+Both display modes show every available surface with its separate evidence-status
+badge, including partial and heuristic candidates. An empty surface set displays
+`Unavailable`, with the status and source explanation retained. Forms + evidence
+also shows each cell's rule and source inline; Forms + status keeps them available
+on hover or focus. Displaying a candidate never promotes its evidence status.
+Multiple Meanbot surfaces are rendered with ` / ` and remain an array in the debug
+API.
 
 ## Browser architecture
 
@@ -48,6 +51,7 @@ Run the fixture and metadata regression:
 
 ```sh
 node tests/regression.mjs --write
+node tests/rendering.mjs
 ```
 
 It consumes the frozen `tests/meanbot_expected_verbs.tsv` oracle and writes:
