@@ -49,6 +49,28 @@ for (const row of D.rows) {
 }
 assert.deepEqual(counts, { "existing-agreement": 52, "audited-conflict": 14, "new-document-cell": 50, "lexical-substitution": 6, "ambiguous-lemma": 3, "unresolved-stem": 3 });
 
+// The reported dictionary spelling must use its documented variant, never
+// the consonant-stem -sta pattern that previously produced rakasi/rakasin.
+const reported = M.resolveInput("rakasta");
+assert.equal(reported.lemma, "rakastaa");
+assert.equal(reported.normalized, "rakasta");
+assert.equal(reported.normalized_from, "rakasta");
+assert.deepEqual(reported.dictionary_variant.regions, ["Kie"]);
+assert.ok(reported.note.includes("showing the documented rakastaa forms"));
+assert.equal(MeanKieliPastExamples.inferRegular("rakasta"), null);
+const reportedPast = MeanKieliGrammar.PRONOUNS.map(person => get("rakasta", person.slot));
+assert.deepEqual(reportedPast.map(cell => cell.surfaces), [["rakastin"], ["rakastit"], ["rakasti"], ["rakastima"], ["rakastitta"], ["rakastit"]]);
+assert.deepEqual(reportedPast.map(cell => cell.status), ["heuristic", "heuristic", "documented", "heuristic", "heuristic", "heuristic"]);
+assert.deepEqual(M.generateCell("rakasta", "nonfinite|Past participle|active").surfaces, ["rakastanu"]);
+assert.deepEqual(M.generateCell("rakasta", "finite|Past negative tense|mie").surfaces, ["en rakastanu"]);
+assert.deepEqual(M.generateCell("rakasta", "finite|Present tense|mie").surfaces, ["rakastan"]);
+assert.deepEqual(get("herättä", "se/hään").surfaces, ["herätti"]);
+assert.equal(get("herättä", "se/hään").status, "documented");
+assert.equal(M.resolveInput("halkasta").lemma, "halkasta");
+assert.deepEqual(get("halkasta", "se/hään").surfaces, []);
+assert.equal(MeanKieliPastExamples.resolveDictionarySpelling("aukoa"), null);
+assert.equal(MeanKieliPastExamples.resolveDictionarySpelling("jää"), null);
+
 // Surface -t alone does not identify person: source subjects license Pl3.
 for (const id of ["T19.R2", "T19.R7", "T39.R5"]) assert.equal(D.rows.find(row => row.id === id).slot, "net/het");
 assert.equal(D.rows.find(row => row.id === "T23.R4").slot, "pl");

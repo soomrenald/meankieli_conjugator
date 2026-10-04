@@ -108,5 +108,8 @@ means an explicit composed document example; it is distinct from analyzer-backed
   See `docs/MEANBOT_PHASE21_UPDATE.md` for source locators and validation limits.
 - `saa` preserves lexical ambiguity; ASCII `saa'a` is visibly normalized to
   strict `saa’a`.
+- Reciprocal dictionary short-vowel spellings such as `rakasta` visibly select
+  their documented `rakastaa` form set, preserving the original regional label.
+  Unbacked spellings do not enter the productive `-sta` rule.
 - `jua` and `juua` are distinct classes.
 - `voia` is not promoted to the strict lemma `voija`.

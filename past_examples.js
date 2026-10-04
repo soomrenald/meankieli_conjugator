@@ -16,6 +16,30 @@
   }
   function hasExamples(lemma) { return rowsFor(lemma).length > 0; }
   function resolveAlias(lemma) { return D.aliases[lemma] || null; }
+  function shortVowelDictionaryVariant(lemma) {
+    if (!/[aä]$/.test(lemma)) return null;
+    const target = lemma + lemma.slice(-1);
+    const dictionary = global.MEANKIELI_DICTIONARY || {};
+    const inputEntry = dictionary[lemma];
+    const targetEntry = dictionary[target];
+    const regionalTag = /^(?:Je|Kie|To)(?:,(?:Je|Kie|To))*$/;
+    const verbOnly = entry => entry?.pos?.includes("v") && entry.pos.every(tag => tag === "v" || regionalTag.test(tag));
+    // Require both explicit dictionary links, verb POS without noun ambiguity,
+    // and the single repeated final vowel. Other variant/derivation relations
+    // do not license substituting one lemma's morphology for another.
+    if (!verbOnly(inputEntry) || !verbOnly(targetEntry) ||
+        !inputEntry.variants?.includes(target) || !targetEntry.variants?.includes(lemma)) return null;
+    const regions = [...new Set([...(inputEntry.geo || []), ...inputEntry.pos.filter(tag => regionalTag.test(tag))])];
+    return { input: lemma, lemma: target, regions };
+  }
+  function resolveDictionarySpelling(lemma) {
+    if (rowsFor(lemma).some(row => accepted.has(row.disposition))) return null;
+    const variant = shortVowelDictionaryVariant(lemma);
+    if (!variant || !rowsFor(variant.lemma).some(row => accepted.has(row.disposition))) return null;
+    const regional = variant.regions.length ? ` (${variant.regions.join(", ")})` : "";
+    return Object.freeze({ ...variant, regions: Object.freeze(variant.regions),
+      note: `Dictionary spelling variant ${lemma}${regional}: showing the documented ${variant.lemma} forms. The original spelling and regional label are retained.` });
+  }
   function resolutionNote(lemma) {
     const rows = rowsFor(lemma);
     if (!rows.length) return "";
@@ -70,7 +94,7 @@
     // Dictionary POS licenses the lemma, not its proposed paradigm. Multiple
     // POS values, geographic restrictions and dictionary spelling stay intact.
     const dictionaryEntry = global.MEANKIELI_DICTIONARY?.[lemma];
-    if (!dictionaryEntry?.pos?.includes("v") || D.blocked_rule_lemmas.includes(lemma)) return null;
+    if (!dictionaryEntry?.pos?.includes("v") || D.blocked_rule_lemmas.includes(lemma) || shortVowelDictionaryVariant(lemma)) return null;
     if (/st[aä]$/.test(lemma) && !/juost[aä]$/.test(lemma)) {
       return { stem: lemma.slice(0, -2) + "i", rule: "DOC.PAST.REGULAR.STA", ids: ["T25.R1", "T25.R2", "T25.R4", "T25.R7"] };
     }
@@ -127,5 +151,5 @@
     if (key.startsWith("finite|")) return compose(resolution, key, generate);
     return null;
   }
-  global.MeanKieliPastExamples = Object.freeze({ generateCell, annotateKnown, resolveAlias, hasExamples, resolutionNote, inferRegular });
+  global.MeanKieliPastExamples = Object.freeze({ generateCell, annotateKnown, resolveAlias, resolveDictionarySpelling, hasExamples, resolutionNote, inferRegular });
 })(window);

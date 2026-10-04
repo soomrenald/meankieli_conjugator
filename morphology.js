@@ -91,6 +91,14 @@
         note: [visiblyNormalized ? `Input punctuation normalized visibly to ${input.normalized}.` : "", global.MeanKieliPastExamples?.resolutionNote(input.normalized)].filter(Boolean).join(" ")
       };
     }
+    const spellingVariant = global.MeanKieliPastExamples?.resolveDictionarySpelling(input.normalized);
+    if (spellingVariant) {
+      const candidates = inferUnknownCandidates(spellingVariant.lemma);
+      return { ...input, kind: candidates.length > 1 ? "unknown_ambiguous" : "unknown",
+        documented_past: true, lemma: spellingVariant.lemma, candidates,
+        normalized_from: input.raw, dictionary_variant: spellingVariant,
+        note: [spellingVariant.note, global.MeanKieliPastExamples.resolutionNote(spellingVariant.lemma)].join(" ") };
+    }
     const candidates = inferUnknownCandidates(input.normalized);
     return {
       ...input,

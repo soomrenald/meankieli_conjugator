@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Browser smoke test</title>
-  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css?v=rakasta-fix">
 </head>
 <body>
   <pre id="smoke">PENDING</pre>
@@ -23,9 +23,9 @@
   <script src="../meanbot_update_data.js"></script>
   <script src="../meanbot_updates.js"></script>
   <script src="../past_example_data.js"></script>
-  <script src="../past_examples.js"></script>
-  <script src="../morphology.js"></script>
-  <script src="../render.js"></script>
+  <script src="../past_examples.js?v=rakasta-fix"></script>
+  <script src="../morphology.js?v=rakasta-fix"></script>
+  <script src="../render.js?v=rakasta-fix"></script>
   <script src="../app.js"></script>
   <script>
     window.addEventListener("load", () => {
@@ -105,6 +105,20 @@
       checks.source_conflict_explained = auditedPast.querySelectorAll("td")[3].querySelector(".cell-result").title.includes("vanhentu");
       checks.source_conflict_not_variant = !auditedPast.querySelectorAll("td")[3].querySelector(".cell-forms").textContent.includes("vanhentu");
       checks.visible_variant_normalization = api.resolveInput("tehjä").lemma === "tehä" && api.resolveInput("tehjä").normalized_from === "tehjä";
+      document.getElementById("verbInput").value = "rakasta";
+      document.getElementById("conjugateBtn").click();
+      const reportedPast = [...output.querySelectorAll("tbody tr")].find(row => row.querySelector("td").textContent === "Past tense");
+      checks.reported_spelling_past = reportedPast.querySelectorAll("td")[3].querySelector(".cell-forms").textContent === "rakasti";
+      checks.reported_spelling_document_badge = reportedPast.querySelectorAll("td")[3].querySelector(".cell-badge").textContent === "Document example";
+      checks.reported_spelling_mie = reportedPast.querySelectorAll("td")[1].querySelector(".cell-forms").textContent === "rakastin";
+      checks.reported_spelling_no_rakasi = ![...reportedPast.querySelectorAll(".cell-forms")].some(cell => /^(rakasi|rakasin)$/.test(cell.textContent));
+      checks.variant_target_visible = output.textContent.includes("Forms shown for") && output.textContent.includes("showing the documented rakastaa forms");
+      checks.original_region_retained = output.textContent.includes("rakasta (Kie)") && output.textContent.includes("Part of speech: Kie, v");
+      checks.reported_spelling_participle = api.generateCell("rakasta", "nonfinite|Past participle|active").surfaces[0] === "rakastanu";
+      checks.unsupported_variant_not_guessed = api.generateCell("halkasta", "finite|Past tense|se/hään").surfaces.length === 0;
+      const reportedWrap = output.querySelector(".table-wrap");
+      reportedWrap.scrollLeft = 150;
+      checks.sticky_body_column_opaque = [...output.querySelectorAll("tbody td:first-child")].every(cell => getComputedStyle(cell).position === "sticky" && /^rgb\(/.test(getComputedStyle(cell).backgroundColor));
       const passed = Object.values(checks).every(Boolean);
       document.getElementById("smoke").textContent = JSON.stringify({ passed, checks });
       document.body.dataset.smoke = passed ? "pass" : "fail";
