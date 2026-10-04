@@ -85,7 +85,7 @@
       classLabel = resolution.candidates.map(candidate => candidate.class_id).join(" / ");
       confidence = resolution.candidates.length > 1 ? "ambiguous surface classes" : "unverified surface class";
     }
-    const normalized = resolution.normalized_from ? `<div><span>Normalized input</span><strong>${escapeHtml(resolution.lemma)}</strong></div>` : "";
+    const normalized = resolution.normalized_from ? `<div><span>Forms shown for</span><strong>${escapeHtml(resolution.lemma)}</strong></div>` : "";
     return `<div class="meta-grid">
       <div><span>Resolution</span><strong>${escapeHtml(confidence)}</strong></div>
       <div><span>Morphology class</span><strong>${escapeHtml(classLabel)}</strong></div>
